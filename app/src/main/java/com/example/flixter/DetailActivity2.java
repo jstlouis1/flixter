@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.flixter.databinding.ActivityDetail2Binding;
+import com.example.flixter.databinding.ForbackdropplayoutBinding;
 import com.example.flixter.models.Movie;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -27,7 +28,7 @@ public class DetailActivity2 extends YouTubeBaseActivity {
     private static String YOUTUBE_API_KEY= "AIzaSyCDPptZRbMIb25K0oZyGN4sjXzCMGbhPqU";
     public static final String VIDEOS_URL="https://api.themoviedb.org/3/movie/%d/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
-
+    float vote;
 
 
     YouTubePlayerView youTubePlayerView;
@@ -46,6 +47,7 @@ public class DetailActivity2 extends YouTubeBaseActivity {
 
        String title= getIntent().getStringExtra("title");
         Movie movie= Parcels.unwrap(getIntent().getParcelableExtra("movie"));
+        vote=(float)movie.getRating();
         detail2Binding.setMovie(movie);
         detail2Binding.executePendingBindings();
 
@@ -86,7 +88,13 @@ public class DetailActivity2 extends YouTubeBaseActivity {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 Log.d("DetailActivity","onInitializationSuccess");
-                youTubePlayer.cueVideo(youtubeKey);
+                if(vote>5){
+                    youTubePlayer.loadVideo(youtubeKey);
+
+                }else{
+                    youTubePlayer.cueVideo(youtubeKey);
+                }
+
             }
 
             @Override
